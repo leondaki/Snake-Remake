@@ -4,14 +4,10 @@
 [ext_resource path="res://field.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Apple.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Main.gd" type="Script" id=4]
-[ext_resource path="res://art/snake_body.png" type="Texture" id=5]
+[ext_resource path="res://snake_body.tscn" type="PackedScene" id=5]
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
-
-[node name="Snake" parent="." instance=ExtResource( 1 )]
-position = Vector2( 32, 32 )
-scale = Vector2( 4, 4 )
 
 [node name="Field" parent="." instance=ExtResource( 2 )]
 scale = Vector2( 4, 4 )
@@ -22,7 +18,52 @@ visible = false
 position = Vector2( 32, 32 )
 scale = Vector2( 3, 3 )
 
-[node name="SnakeBody" type="Sprite" parent="."]
-position = Vector2( -34, 32 )
+[node name="SnakeBodyParts" type="Node2D" parent="."]
+position = Vector2( -32, 32 )
+
+[node name="Head" parent="SnakeBodyParts" instance=ExtResource( 1 )]
+position = Vector2( 64, 0 )
 scale = Vector2( 4, 4 )
-texture = ExtResource( 5 )
+
+[node name="Body1" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+scale = Vector2( 4, 4 )
+
+[node name="Body2" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -64, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body3" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -128, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body4" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -192, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body6" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -256, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body7" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -320, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body8" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -384, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body9" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -448, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body10" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -512, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body11" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -576, 0 )
+scale = Vector2( 4, 4 )
+
+[node name="Body12" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( -640, 0 )
+scale = Vector2( 4, 4 )
