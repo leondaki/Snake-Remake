@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Snake.tscn" type="PackedScene" id=1]
 [ext_resource path="res://field.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Apple.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Main.gd" type="Script" id=4]
 [ext_resource path="res://snake_body.tscn" type="PackedScene" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 640, 4.6875 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -13,57 +16,42 @@ script = ExtResource( 4 )
 scale = Vector2( 4, 4 )
 z_index = -1
 
-[node name="Apple" parent="." instance=ExtResource( 3 )]
-visible = false
-position = Vector2( 32, 32 )
-scale = Vector2( 3, 3 )
+[node name="Apple" parent="." groups=["Apple"] instance=ExtResource( 3 )]
+position = Vector2( 352, 288 )
 
 [node name="SnakeBodyParts" type="Node2D" parent="."]
-position = Vector2( -32, 32 )
+position = Vector2( 160, 288 )
 
 [node name="Head" parent="SnakeBodyParts" instance=ExtResource( 1 )]
 position = Vector2( 64, 0 )
 scale = Vector2( 4, 4 )
 
 [node name="Body1" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-scale = Vector2( 4, 4 )
 
 [node name="Body2" parent="SnakeBodyParts" instance=ExtResource( 5 )]
 position = Vector2( -64, 0 )
-scale = Vector2( 4, 4 )
 
 [node name="Body3" parent="SnakeBodyParts" instance=ExtResource( 5 )]
 position = Vector2( -128, 0 )
-scale = Vector2( 4, 4 )
 
-[node name="Body4" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -192, 0 )
-scale = Vector2( 4, 4 )
+[node name="Borders" type="Area2D" parent="."]
 
-[node name="Body6" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -256, 0 )
-scale = Vector2( 4, 4 )
+[node name="top" type="CollisionShape2D" parent="Borders"]
+position = Vector2( 640, -5 )
+shape = SubResource( 1 )
 
-[node name="Body7" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -320, 0 )
-scale = Vector2( 4, 4 )
+[node name="bottom" type="CollisionShape2D" parent="Borders"]
+position = Vector2( 1285, 640 )
+rotation = 1.5708
+shape = SubResource( 1 )
 
-[node name="Body8" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -384, 0 )
-scale = Vector2( 4, 4 )
+[node name="left" type="CollisionShape2D" parent="Borders"]
+position = Vector2( -5, 640 )
+rotation = 1.5708
+shape = SubResource( 1 )
 
-[node name="Body9" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -448, 0 )
-scale = Vector2( 4, 4 )
+[node name="right" type="CollisionShape2D" parent="Borders"]
+position = Vector2( 640, 1285 )
+shape = SubResource( 1 )
 
-[node name="Body10" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -512, 0 )
-scale = Vector2( 4, 4 )
-
-[node name="Body11" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -576, 0 )
-scale = Vector2( 4, 4 )
-
-[node name="Body12" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -640, 0 )
-scale = Vector2( 4, 4 )
+[connection signal="area_entered" from="SnakeBodyParts/Head" to="SnakeBodyParts/Head" method="_on_Head_area_entered"]

@@ -7,3 +7,15 @@
 [node name="Field" type="Sprite" parent="."]
 position = Vector2( 80, 80 )
 texture = ExtResource( 1 )
+
+[node name="Field2" type="Sprite" parent="."]
+position = Vector2( 240, 80 )
+texture = ExtResource( 1 )
+
+[node name="Field3" type="Sprite" parent="."]
+position = Vector2( 80, 240 )
+texture = ExtResource( 1 )
+
+[node name="Field4" type="Sprite" parent="."]
+position = Vector2( 240, 240 )
+texture = ExtResource( 1 )

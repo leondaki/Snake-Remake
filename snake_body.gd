@@ -1,8 +1,8 @@
 extends Area2D
 
 export var currentDir = Vector2.RIGHT
-var destination= []
-var directions= []
+var destination = []
+var directions = []
 
 # Declare member variables here. Examples:
 # var a: int = 2
