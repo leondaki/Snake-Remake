@@ -1,6 +1,6 @@
 extends Area2D
 
-export var updateSpeed = 0.001
+export var updateSpeed = 0.005
 var moveCounter = updateSpeed
 export var moveAmount = 4
 
@@ -20,6 +20,8 @@ var length = 3
 var newLength = length
 
 signal AteApple
+signal Died
+var gameStarted = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -37,11 +39,11 @@ func _process(delta: float) -> void:
 			prevBodyPart = snakeBodyParts.get_child(i+1)
 		
 		if i == 0:	
-			if (nextDir != currentDir):
-				snakeBodyParts.get_child(1).destination.push_back(position)
-				if fmod(position.x, 64) == 0 and fmod(position.y, 64) == 0:					
+			if (nextDir != currentDir):			
+				if fmod(position.x, 64) == 0 and fmod(position.y, 64) == 0:	
+					snakeBodyParts.get_child(1).destination.push_back(position)				
 					currentDir = nextDir	
-				snakeBodyParts.get_child(1).directions.push_back(currentDir) 
+					snakeBodyParts.get_child(1).directions.push_back(currentDir) 
 		
 		if i >= 1:
 			if !bodyPart.directions.empty():
@@ -97,7 +99,10 @@ func _process(delta: float) -> void:
 	moveCounter -= delta
 	
 	
-
+func _unhandled_key_input(event):
+	if event is InputEventKey and event.pressed and !gameStarted:
+		get_tree().change_scene("res://Main.tscn")
+		
 func IsNextPartATileAway(i: int) -> bool:
 	return sqrt(pow(snakeBodyParts.get_child(i).position.x - snakeBodyParts.get_child(i-1).position.x, 2) + \
 			pow(snakeBodyParts.get_child(i).position.y - snakeBodyParts.get_child(i-1).position.y, 2)) == 64
@@ -112,19 +117,22 @@ func AddBodyPart(i: int) -> void:
 
 func MovePart(i: int) -> void:
 	snakeBodyParts.get_child(i).position += \
-		snakeBodyParts.get_child(i).currentDir * moveAmount	
+		snakeBodyParts.get_child(i).currentDir * moveAmount
 		
 			
 func SetNextDir() -> void: 	
 	if Input.is_action_just_pressed("move_right") && currentDir != Vector2.LEFT:
 		nextDir = Vector2.RIGHT
+		
 	if Input.is_action_just_pressed("move_left")  && currentDir != Vector2.RIGHT:
 		nextDir = Vector2.LEFT
+
 	if Input.is_action_just_pressed("move_up") && currentDir != Vector2.DOWN:
 		nextDir = Vector2.UP
+
 	if Input.is_action_just_pressed("move_down") && currentDir != Vector2.UP:
 		nextDir = Vector2.DOWN
-	
+
 
 func _on_Head_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Apple"):
@@ -134,10 +142,13 @@ func _on_Head_area_entered(area: Area2D) -> void:
 		main.call_deferred("add_child", apple)
 		emit_signal("AteApple")
 		partsToAdd += 1
-		
+
 		apple.position.x = int(rand_range(1, 9)) * 64 + 32
 		apple.position.y = int(rand_range(1, 9)) * 64 + 32
+
 		apple.add_to_group("Apple")
 		area.queue_free()
 	else:
+		emit_signal("Died")
 		moveAmount = 0
+		gameStarted = false

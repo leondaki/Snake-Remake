@@ -9,7 +9,7 @@
 [ext_resource path="res://art/ui_bg.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 320, 4.84375 )
+extents = Vector2( 320, 50.4219 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -25,6 +25,7 @@ position = Vector2( 352, 288 )
 
 [node name="SnakeBodyParts" type="Node2D" parent="."]
 position = Vector2( 160, 288 )
+z_index = -1
 
 [node name="Head" parent="SnakeBodyParts" instance=ExtResource( 1 )]
 position = Vector2( 64, 0 )
@@ -38,21 +39,21 @@ position = Vector2( -64, 0 )
 [node name="Borders" type="Area2D" parent="."]
 
 [node name="top" type="CollisionShape2D" parent="Borders"]
-position = Vector2( 320, -5 )
+position = Vector2( 320, -51 )
 shape = SubResource( 1 )
 
 [node name="bottom" type="CollisionShape2D" parent="Borders"]
-position = Vector2( 645, 320 )
+position = Vector2( 691, 320 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="left" type="CollisionShape2D" parent="Borders"]
-position = Vector2( -5, 320 )
+position = Vector2( -50.5781, 320 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="right" type="CollisionShape2D" parent="Borders"]
-position = Vector2( 319, 644.844 )
+position = Vector2( 320, 691 )
 shape = SubResource( 1 )
 
 [node name="UiBg" type="Sprite" parent="."]
@@ -60,5 +61,6 @@ position = Vector2( 319, 672 )
 z_index = -1
 texture = ExtResource( 7 )
 
-[connection signal="AteApple" from="SnakeBodyParts/Head" to="." method="_on_Head_AteApple"]
+[connection signal="AteApple" from="SnakeBodyParts/Head" to="Interface" method="_on_Head_AteApple"]
+[connection signal="Died" from="SnakeBodyParts/Head" to="Interface" method="_on_Head_Died"]
 [connection signal="area_entered" from="SnakeBodyParts/Head" to="SnakeBodyParts/Head" method="_on_Head_area_entered"]

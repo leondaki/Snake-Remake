@@ -7,10 +7,12 @@ extends Node
 # var b: String = "text"
 
 var appleCounter
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	appleCounter = get_node("/root/Main/Interface/AppleCounter")
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 #	pass

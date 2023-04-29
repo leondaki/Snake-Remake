@@ -1,12 +1,27 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Interface/AppleCounter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Interface/Interface.gd" type="Script" id=2]
+[ext_resource path="res://Interface/default_theme.tres" type="Theme" id=3]
 
 [node name="Interface" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
+
+[node name="DeathText" type="Label" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -257.0
+margin_top = 176.0
+margin_right = 258.0
+margin_bottom = 462.0
+theme = ExtResource( 3 )
+text = "GAME OVER!
+any key to restart"
+align = 1
+valign = 1
 
 [node name="AppleCounter" parent="." instance=ExtResource( 1 )]
 anchor_left = 0.5
