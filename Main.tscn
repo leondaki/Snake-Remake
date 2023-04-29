@@ -1,16 +1,20 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Snake.tscn" type="PackedScene" id=1]
 [ext_resource path="res://field.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Apple.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Apple/Apple.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Main.gd" type="Script" id=4]
 [ext_resource path="res://snake_body.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Interface/Interface.tscn" type="PackedScene" id=6]
+[ext_resource path="res://art/ui_bg.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 640, 4.6875 )
+extents = Vector2( 320, 4.84375 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
+
+[node name="Interface" parent="." instance=ExtResource( 6 )]
 
 [node name="Field" parent="." instance=ExtResource( 2 )]
 scale = Vector2( 4, 4 )
@@ -31,27 +35,30 @@ scale = Vector2( 4, 4 )
 [node name="Body2" parent="SnakeBodyParts" instance=ExtResource( 5 )]
 position = Vector2( -64, 0 )
 
-[node name="Body3" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -128, 0 )
-
 [node name="Borders" type="Area2D" parent="."]
 
 [node name="top" type="CollisionShape2D" parent="Borders"]
-position = Vector2( 640, -5 )
+position = Vector2( 320, -5 )
 shape = SubResource( 1 )
 
 [node name="bottom" type="CollisionShape2D" parent="Borders"]
-position = Vector2( 1285, 640 )
+position = Vector2( 645, 320 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="left" type="CollisionShape2D" parent="Borders"]
-position = Vector2( -5, 640 )
+position = Vector2( -5, 320 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="right" type="CollisionShape2D" parent="Borders"]
-position = Vector2( 640, 1285 )
+position = Vector2( 319, 644.844 )
 shape = SubResource( 1 )
 
+[node name="UiBg" type="Sprite" parent="."]
+position = Vector2( 319, 672 )
+z_index = -1
+texture = ExtResource( 7 )
+
+[connection signal="AteApple" from="SnakeBodyParts/Head" to="." method="_on_Head_AteApple"]
 [connection signal="area_entered" from="SnakeBodyParts/Head" to="SnakeBodyParts/Head" method="_on_Head_area_entered"]

@@ -8,26 +8,33 @@ var currentDir = Vector2.RIGHT
 var nextDir = Vector2.RIGHT
 var lastSwitch = Vector2.ZERO
 
-var apple_scene = load("res://Apple.tscn")
+var apple_scene = load("res://Apple/Apple.tscn")
 var snake_body_scene = load("res://snake_body.tscn")
 
 var snakeBodyParts
+var main
+var interface
 
 var partsToAdd = 0
 var length = 3
 var newLength = length
 
+signal AteApple
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	snakeBodyParts = get_node("/root/Main/SnakeBodyParts")
-
+	main = get_node("/root/Main") 
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	SetNextDir()
 							
 	for i in snakeBodyParts.get_child_count():
 		var bodyPart = snakeBodyParts.get_child(i)
-		var prevBodyPart = snakeBodyParts.get_child(i+1)
+		var prevBodyPart
+		if i < snakeBodyParts.get_child_count()-1:
+			prevBodyPart = snakeBodyParts.get_child(i+1)
 		
 		if i == 0:	
 			if (nextDir != currentDir):
@@ -73,7 +80,6 @@ func _process(delta: float) -> void:
 			fmod(tail.position.y, 64) == 0 and IsNextPartATileAway(last):
 
 			AddBodyPart(last)
-			print("added body part!")
 			partsToAdd -= 1
 			newLength += 1
 			
@@ -89,6 +95,8 @@ func _process(delta: float) -> void:
 				
 	
 	moveCounter -= delta
+	
+	
 
 func IsNextPartATileAway(i: int) -> bool:
 	return sqrt(pow(snakeBodyParts.get_child(i).position.x - snakeBodyParts.get_child(i-1).position.x, 2) + \
@@ -122,14 +130,14 @@ func _on_Head_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Apple"):
 		
 		var apple = apple_scene.instance()
-		get_node("/root/Main").add_child(apple)
-		
-		partsToAdd += 1
 
-		apple.position.x = int(rand_range(1, 19)) * 64 + 32
-		apple.position.y = int(rand_range(1, 19)) * 64 + 32
+		main.call_deferred("add_child", apple)
+		emit_signal("AteApple")
+		partsToAdd += 1
+		
+		apple.position.x = int(rand_range(1, 9)) * 64 + 32
+		apple.position.y = int(rand_range(1, 9)) * 64 + 32
 		apple.add_to_group("Apple")
 		area.queue_free()
 	else:
 		moveAmount = 0
-
