@@ -23,6 +23,5 @@ func _on_Head_AteApple() -> void:
 
 
 func _on_Head_Died() -> void:
-	print('show text')
 	deathText.visible = true
 

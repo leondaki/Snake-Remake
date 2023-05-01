@@ -1,8 +1,8 @@
 extends Area2D
 
-export var updateSpeed = 0.005
+export var updateSpeed = 0.02
 var moveCounter = updateSpeed
-export var moveAmount = 4
+export var moveAmount = 8
 
 var currentDir = Vector2.RIGHT
 var nextDir = Vector2.RIGHT
@@ -30,7 +30,9 @@ func _ready() -> void:
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+
 	SetNextDir()
+
 							
 	for i in snakeBodyParts.get_child_count():
 		var bodyPart = snakeBodyParts.get_child(i)
@@ -40,7 +42,7 @@ func _process(delta: float) -> void:
 		
 		if i == 0:	
 			if (nextDir != currentDir):			
-				if fmod(position.x, 64) == 0 and fmod(position.y, 64) == 0:	
+				if fmod(position.x-32, 64) == 0 and fmod(position.y-32, 64) == 0:	
 					snakeBodyParts.get_child(1).destination.push_back(position)				
 					currentDir = nextDir	
 					snakeBodyParts.get_child(1).directions.push_back(currentDir) 
@@ -78,8 +80,8 @@ func _process(delta: float) -> void:
 		var tail = snakeBodyParts.get_child(last) 		
 
 		if partsToAdd > 0 and \
-			fmod(tail.position.x, 64) == 0 and \
-			fmod(tail.position.y, 64) == 0 and IsNextPartATileAway(last):
+			fmod(tail.position.x-32, 64) == 0 and \
+			fmod(tail.position.y-32, 64) == 0 and IsNextPartATileAway(last):
 
 			AddBodyPart(last)
 			partsToAdd -= 1
@@ -95,7 +97,6 @@ func _process(delta: float) -> void:
 			for i in snakeBodyParts.get_child_count():
 				MovePart(i)	
 				
-	
 	moveCounter -= delta
 	
 	
@@ -104,8 +105,8 @@ func _unhandled_key_input(event):
 		get_tree().change_scene("res://Main.tscn")
 		
 func IsNextPartATileAway(i: int) -> bool:
-	return sqrt(pow(snakeBodyParts.get_child(i).position.x - snakeBodyParts.get_child(i-1).position.x, 2) + \
-			pow(snakeBodyParts.get_child(i).position.y - snakeBodyParts.get_child(i-1).position.y, 2)) == 64
+	return abs(snakeBodyParts.get_child(i).position.x - snakeBodyParts.get_child(i-1).position.x) == 64 or \
+			abs(snakeBodyParts.get_child(i).position.y - snakeBodyParts.get_child(i-1).position.y) == 64
 			
 				
 func AddBodyPart(i: int) -> void: 
@@ -121,17 +122,14 @@ func MovePart(i: int) -> void:
 		
 			
 func SetNextDir() -> void: 	
-	if Input.is_action_just_pressed("move_right") && currentDir != Vector2.LEFT:
-		nextDir = Vector2.RIGHT
-		
-	if Input.is_action_just_pressed("move_left")  && currentDir != Vector2.RIGHT:
-		nextDir = Vector2.LEFT
-
-	if Input.is_action_just_pressed("move_up") && currentDir != Vector2.DOWN:
-		nextDir = Vector2.UP
-
-	if Input.is_action_just_pressed("move_down") && currentDir != Vector2.UP:
-		nextDir = Vector2.DOWN
+		if Input.is_action_pressed("move_right") && currentDir != Vector2.LEFT:
+			nextDir = Vector2.RIGHT	
+		if Input.is_action_pressed("move_left")  && currentDir != Vector2.RIGHT:
+			nextDir = Vector2.LEFT
+		if Input.is_action_pressed("move_up") && currentDir != Vector2.DOWN:
+			nextDir = Vector2.UP
+		if Input.is_action_pressed("move_down") && currentDir != Vector2.UP:
+			nextDir = Vector2.DOWN
 
 
 func _on_Head_area_entered(area: Area2D) -> void:
@@ -143,10 +141,12 @@ func _on_Head_area_entered(area: Area2D) -> void:
 		emit_signal("AteApple")
 		partsToAdd += 1
 
+		apple.add_to_group("Apple")
+		apple.name = "Apple"
+		
 		apple.position.x = int(rand_range(1, 9)) * 64 + 32
 		apple.position.y = int(rand_range(1, 9)) * 64 + 32
-
-		apple.add_to_group("Apple")
+		
 		area.queue_free()
 	else:
 		emit_signal("Died")

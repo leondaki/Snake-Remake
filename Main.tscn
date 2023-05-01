@@ -24,19 +24,22 @@ z_index = -1
 position = Vector2( 352, 288 )
 
 [node name="SnakeBodyParts" type="Node2D" parent="."]
-position = Vector2( 160, 288 )
 z_index = -1
 
 [node name="Head" parent="SnakeBodyParts" instance=ExtResource( 1 )]
-position = Vector2( 64, 0 )
+position = Vector2( 160, 288 )
 scale = Vector2( 4, 4 )
 
 [node name="Body1" parent="SnakeBodyParts" instance=ExtResource( 5 )]
+position = Vector2( 96, 288 )
 
 [node name="Body2" parent="SnakeBodyParts" instance=ExtResource( 5 )]
-position = Vector2( -64, 0 )
+position = Vector2( 32, 288 )
 
 [node name="Borders" type="Area2D" parent="."]
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="top" type="CollisionShape2D" parent="Borders"]
 position = Vector2( 320, -51 )
